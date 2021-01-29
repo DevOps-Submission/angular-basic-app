@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
+              sh 'sudo chown -R $USER .'
                 sh 'npm install'
             }
         }
