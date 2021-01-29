@@ -2,13 +2,13 @@ pipeline {
     agent {
         docker {
             image 'node:latest'
-            args '-v $HOME/.m2:/root/.m2'
+            args '-v $HOME/.m2:/root/.m2 -u 0'
         }
     }
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'npm ci'
+                sh 'npm install'
             }
         }
         stage('Test') {
