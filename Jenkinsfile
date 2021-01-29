@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-              sh 'sudo chown -R 1001:1001 "/.npm"'
+              sh 'chmod 777 /.npm'
                 sh 'npm install'
             }
         }
