@@ -13,7 +13,8 @@ pipeline {
                 sh 'echo "$(pwd)"'
                 sh 'echo "$(ls -a $HOME)"'
                 sh 'echo "$(ls -a /)"'
-                sh 'sudo chown -R 1001 "$HOME/.npm"'
+                sh 'echo "$HOME"'
+                sh 'chown -R 1001:1001 "$HOME/.npm"'
                 sh 'npm install'
             }
         }
