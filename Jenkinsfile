@@ -8,13 +8,12 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'echo "$USER"'
                 sh 'echo "$(ls -a)"'
                 sh 'echo "$(pwd)"'
                 sh 'echo "$(ls -a $HOME)"'
                 sh 'echo "$(ls -a /)"'
-                sh 'echo "$HOME"'
-                sh 'chown -R 1001:1001 "$HOME/.npm"'
+                sh 'touch /.npm'
+                sh 'chown -R 1001:1001 "/.npm"'
                 sh 'npm install'
             }
         }
