@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-              sh 'chown -R 1001:1001 "~/.npm"'
+              sh 'chown -R 1001:1001 "/.npm"'
                 sh 'npm install'
             }
         }
