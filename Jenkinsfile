@@ -8,12 +8,12 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'echo "$(whoami)"'
-                sh 'echo "$(ll)"'
+                sh 'echo "$USER"'
+                sh 'echo "$(ls -a)"'
                 sh 'echo "$(pwd)"'
-                sh 'echo "$(ll $HOME)"'
-                sh 'echo "$(ll /)"'
-                sh 'sudo chown -R $(whoami) "$HOME/.npm"'
+                sh 'echo "$(ls -a $HOME)"'
+                sh 'echo "$(ls -a /)"'
+                sh 'sudo chown -R 1001 "$HOME/.npm"'
                 sh 'npm install'
             }
         }
