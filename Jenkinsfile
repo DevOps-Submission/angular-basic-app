@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-              sh 'chmod 777 /.npm'
+              sh 'npm cache clean'
                 sh 'npm install'
             }
         }
