@@ -1,7 +1,8 @@
 pipeline {
     stages {
       agent none
-      stages('Build and Test Software') {
+      stage('Build and Test Software') {
+      stages{
             agent {
         docker {
             image 'node:latest'
@@ -27,9 +28,10 @@ pipeline {
       steps { sh 'npm run-script build' }
     }
       }
+      }
       
-      
-      stages('Build and Upload Docker Image') {
+      stage('Build and Upload Docker Image') {
+      stages{
         agent any 
         stage('Build Docker Image') {
           steps {
@@ -44,6 +46,7 @@ pipeline {
             }
           }
         }
+      }
       }
     }
 }
