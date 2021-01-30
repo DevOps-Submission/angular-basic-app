@@ -23,7 +23,7 @@ module.exports = function (config) {
     },
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
-    },
+    }/*,
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage/angular-project'),
       subdir: '.',
@@ -40,5 +40,5 @@ module.exports = function (config) {
     browsers: ['ChromeHeadless'],
    // singleRun: false,
     restartOnFileChange: true
-  });
+  });*/
 };
