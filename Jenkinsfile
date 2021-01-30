@@ -39,7 +39,12 @@ pipeline {
       
         stage('Build and Upload Docker Image') {
             agent any
-            stages { 
+            stages {
+                stage('Lint Dockerfile') {
+                    steps {
+                        sh 'hadolint Dockerfile'
+                    }
+                }
                 stage('Build Docker Image') {
                     steps {
                         sh 'docker build -t yaraamrallah/angular-basic-app:v .'
