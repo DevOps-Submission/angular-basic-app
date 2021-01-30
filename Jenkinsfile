@@ -55,8 +55,7 @@ pipeline {
                 }
                 stage('Image Security Scan') {
                     steps {
-                        def imageLine = 'yaraamrallah/angular-basic-app:v'
-                        writeFile file: 'anchore_images', text: imageLine
+                        writeFile file: 'anchore_images', text: 'docker.io/yaraamrallah/angular-basic-app:v'
                         anchore name: 'anchore_images'
                     }
                 }
