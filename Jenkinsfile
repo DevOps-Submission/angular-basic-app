@@ -28,7 +28,10 @@ pipeline {
                     steps { sh 'npm run-script build' }
                 }
               post {
-                archiveArtifacts artifacts: '/app/dist/angular-project', followSymlinks: false, onlyIfSuccessful: true
+                success {
+                  stash name: "artifacts", includes: "/app/dist/angular-project"
+                }
+                // archiveArtifacts artifacts: '/app/dist/angular-project', followSymlinks: false, onlyIfSuccessful: true
               }
             }
         }
