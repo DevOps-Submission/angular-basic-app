@@ -40,5 +40,5 @@ module.exports = function (config) {
     browsers: ['ChromeHeadless'],
    // singleRun: false,
     restartOnFileChange: true
-  });*/
+  }*/);
 };
