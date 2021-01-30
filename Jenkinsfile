@@ -1,11 +1,12 @@
 pipeline {
-    agent {
+    stages {
+      stage('Build and Test Software') {
+            agent {
         docker {
             image 'node:latest'
-            args '-v $HOME/.m2:/root/.m2 -u 0'
+            args '-v $HOME/.m2:/root/.m2 -u 0 -rm -d'
         }
-    }
-    stages {
+        }
         stage('Install dependencies') {
             steps {
                 sh 'npm install'
@@ -20,11 +21,28 @@ pipeline {
             steps { sh 'npm run-script test' }
          }*/
        }
-        }
-      
-      
+        }   
        stage('Build') {
       steps { sh 'npm run-script build' }
     }
+      }
+      
+      
+      stage('Build and Upload Docker Image') {
+        agent none 
+        stage('Build Docker Image') {
+          steps {
+            sh 'docker build -t yaraamrallah/angular-basic-app:v'
+          }
+        }
+        stage('Push Image') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+              sh 'docker login --username $USERNAME --password $PASSWORD'
+              sh 'docker push yaraamrallah/angular-basic-app:v'
+            }
+          }
+        }
+      }
     }
 }
