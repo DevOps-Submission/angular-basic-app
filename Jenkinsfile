@@ -27,6 +27,9 @@ pipeline {
                 stage('Build') {
                     steps { sh 'npm run-script build' }
                 }
+              post {
+                archiveArtifacts artifacts: '/app/dist/angular-project', followSymlinks: false, onlyIfSuccessful: true
+              }
             }
         }
       
