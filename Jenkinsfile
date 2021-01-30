@@ -28,13 +28,13 @@ pipeline {
                     steps { sh 'npm run-script build' }
                 }
             }
-              post {
+
+            post {
                 success {
-                  echo 'Success!'
-                  stash name: "artifacts", includes: "/app/dist/angular-project"
+                    echo 'Success!'
+                    stash name: "artifacts", includes: "/app/dist/angular-project"
                 }
                 // archiveArtifacts artifacts: '/app/dist/angular-project', followSymlinks: false, onlyIfSuccessful: true
-          }
             }
         }
       
