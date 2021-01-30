@@ -45,6 +45,13 @@ pipeline {
                         sh 'docker build -t yaraamrallah/angular-basic-app:v .'
                     }
                 }
+                stage('Image Security Scan') {
+                  steps {
+                      def image = 'yaraamrallah/angular-basic-app:v'
+                      writeFile file: 'anchore_images', text: imageLine`
+                      anchore name: 'anchore_images'`
+                  }
+                }
                 stage('Push Image') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
