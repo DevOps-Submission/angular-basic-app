@@ -32,7 +32,7 @@ pipeline {
             post {
                 success {
                     echo 'Success!'
-                    archiveArtifacts artifacts: '/app/dist/angular-project', followSymlinks: false, onlyIfSuccessful: true
+                    archiveArtifacts artifacts: '/dist/angular-project', followSymlinks: false, onlyIfSuccessful: true
                 }
             }
         }
