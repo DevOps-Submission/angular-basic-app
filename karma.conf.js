@@ -31,7 +31,7 @@ module.exports = function (config) {
         { type: 'html' },
         { type: 'text-summary' }
       ]
-    }/*,
+    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
@@ -39,6 +39,6 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: ['ChromeHeadless'],
    // singleRun: false,
-    restartOnFileChange: true */
+    restartOnFileChange: true
   });
 };
