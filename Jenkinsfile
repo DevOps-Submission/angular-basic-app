@@ -1,5 +1,6 @@
 pipeline {
     stages {
+      agent none
       stages('Build and Test Software') {
             agent {
         docker {
@@ -29,7 +30,7 @@ pipeline {
       
       
       stages('Build and Upload Docker Image') {
-        agent none 
+        agent any 
         stage('Build Docker Image') {
           steps {
             sh 'docker build -t yaraamrallah/angular-basic-app:v'
