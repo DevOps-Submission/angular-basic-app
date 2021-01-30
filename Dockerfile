@@ -1,5 +1,5 @@
 
-FROM node:latest AS node
+FROM node:15 AS node
 WORKDIR /app
 COPY . . 
 RUN npm install
