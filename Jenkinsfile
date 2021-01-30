@@ -1,33 +1,31 @@
 pipeline {
     agent none
     stages {
-        stage('Build and Test Software') {
-            stage ('Node Container'){
-                agent {
-                    docker {
-                        image 'node:latest'
-                        args '-v $HOME/.m2:/root/.m2 -u 0 -rm -d'
+        stage('Build and Test the project') {
+            agent {
+                docker {
+                    image 'node:latest'
+                    args '-v $HOME/.m2:/root/.m2 -u 0 -rm -d'
+                }
+            }
+            stages {
+                stage('Install dependencies') {
+                    steps {
+                        sh 'npm install'
                     }
                 }
-                stages {
-                    stage('Install dependencies') {
-                        steps {
-                            sh 'npm install'
+                stage('Test') {
+                    parallel {
+                        stage('Static code analysis') {
+                            steps { sh 'npm run-script lint' }
                         }
+                        /* stage('Unit tests') {
+                            steps { sh 'npm run-script test' }
+                        }*/
                     }
-                    stage('Test') {
-                        parallel {
-                            stage('Static code analysis') {
-                                steps { sh 'npm run-script lint' }
-                            }
-                            /* stage('Unit tests') {
-                                steps { sh 'npm run-script test' }
-                            }*/
-                        }
-                    }   
-                    stage('Build') {
-                        steps { sh 'npm run-script build' }
-                    }
+                }   
+                stage('Build') {
+                    steps { sh 'npm run-script build' }
                 }
             }
         }
