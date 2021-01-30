@@ -29,6 +29,7 @@ pipeline {
                 }
               post {
                 success {
+                  echo 'Success!'
                   stash name: "artifacts", includes: "/app/dist/angular-project"
                 }
                 // archiveArtifacts artifacts: '/app/dist/angular-project', followSymlinks: false, onlyIfSuccessful: true
