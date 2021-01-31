@@ -22,7 +22,6 @@ pipeline {
                         stage('Unit tests') {
                             steps { 
                               sh 'npm run-script test'
-                              sh 'curl http://localhost:9876/'
                             }
                         }
                     }
