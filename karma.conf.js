@@ -38,6 +38,7 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['ChromeHeadless'],
+    flags: isDocker ? ['--no-sandbox'] : []
    // singleRun: false,
     restartOnFileChange: true
   });
