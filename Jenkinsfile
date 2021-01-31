@@ -5,7 +5,7 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'dockerfile-agent'
-                    args '-v $HOME/.m2:/root/.m2 -u 0'
+                    args '-v $HOME/.m2:/root/.m2 -u 0 -p 9876:9876'
                 }
             }
             stages {
