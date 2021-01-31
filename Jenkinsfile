@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Build and Test the project') {
             agent {
-                docker {
-                    image 'node:latest'
+                dockerfile {
+                    filename 'dockerfile-agent'
                     args '-v $HOME/.m2:/root/.m2 -u 0'
                 }
             }
