@@ -71,6 +71,7 @@ pipeline {
                         sh 'docker run -d -p 80:80 --name angular-app yaraamrallah/angular-basic-app:v'
                         input message: "Finished Testing?"
                         sh 'docker stop angular-app'
+                        sh 'docker rm angular-app'
                         sh 'docker rmi yaraamrallah/angular-basic-app:v'
                     }
                 } 
