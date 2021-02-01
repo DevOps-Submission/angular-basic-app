@@ -74,7 +74,7 @@ pipeline {
 post {
   always {
      deleteDir()
-     sh 'docker image prune'    
+    // sh 'docker image prune'    
   }
 /*  failure {
       // You can add slack or email notification here.
