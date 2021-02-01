@@ -71,11 +71,9 @@ pipeline {
     }
 }
 
-/* post {
-  always {
-     deleteDir()
-    // sh 'docker image prune'    
-  }
+/*
+post {
+
   failure {
       // You can add slack or email notification here.
       // Example: https://github.com/YaraAmrallah/CI-CD-Project1/blob/master/Workflow%20Documentation.pdf
