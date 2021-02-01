@@ -5,7 +5,7 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'dockerfile-agent'
-                    args '-v $HOME/.m2:/root/.m2 -u 0 -p 9876:9876'
+                    args '--rm -v $HOME/.m2:/root/.m2 -u 0 -p 9876:9876'
                 }
             }
             stages {
@@ -57,6 +57,7 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                             sh 'docker login --username $USERNAME --password $PASSWORD'
                             sh 'docker push yaraamrallah/angular-basic-app:v'
+                            sh 'docker image prune'
                         }
                     }
                 }
