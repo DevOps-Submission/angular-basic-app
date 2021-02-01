@@ -57,7 +57,6 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                             sh 'docker login --username $USERNAME --password $PASSWORD'
                             sh 'docker push yaraamrallah/angular-basic-app:v'
-                            sh 'docker image prune'
                         }
                     }
                 }
@@ -70,4 +69,15 @@ pipeline {
             }
         }
     }
+}
+
+post {
+  always {
+     deleteDir()
+     sh 'docker image prune'    
+  }
+/*  failure {
+      // You can add slack or email notification here.
+      // Example: https://github.com/YaraAmrallah/CI-CD-Project1/blob/master/Workflow%20Documentation.pdf
+  } */
 }
