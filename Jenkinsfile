@@ -93,7 +93,7 @@ pipeline {
                         input message: "Forward to users?"
                     }
                 }
-                stage('Create EC2 Instance') {
+                stage('Forward to users') {
                     steps {
                         ansiblePlaybook playbook: 'main-expose.yaml'
                     }
