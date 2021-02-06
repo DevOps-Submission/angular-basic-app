@@ -76,6 +76,7 @@ pipeline {
                             echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
                             """
                         }
+                      sh 'pip3 install boto'
                       sh 'pip3 install boto3'
                     }
                 }
