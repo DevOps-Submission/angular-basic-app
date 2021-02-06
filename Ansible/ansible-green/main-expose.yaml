@@ -1,0 +1,12 @@
+---
+- name: Expose
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    application: green
+  tasks:
+    - name: setup DNS
+      include_role:
+        name: route53
+

@@ -1,0 +1,36 @@
+- name: update apt list
+  apt: 
+    update_cache: yes
+
+- name: Install required system packages
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Update apt and install docker-ce
+  apt: update_cache=yes name=docker-ce state=latest
+
+- name: Install Docker Module for Python
+  pip:
+    name: docker
+
+- name: Pull Docker image
+  docker_image:
+    name: yaraamrallah/angular-basic-app:v
+    source: pull
+
+- name: Create a docker container
+  docker_container:
+    name: "angular-app"
+    image: yaraamrallah/angular-basic-app:v
+    ports:
+      - "80:80"

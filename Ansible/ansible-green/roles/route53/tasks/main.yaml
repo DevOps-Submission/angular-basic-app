@@ -1,0 +1,50 @@
+---
+- name: Gather Information about green instances
+  ec2_instance_info:
+    region: us-east-2
+    filters:
+      "tag:application": green
+  register: myFactsg
+
+- debug: var=myFactsg
+
+- name: Wait for servers to come online
+  wait_for:
+    host: "{{ item.public_ip_address }}"
+    port: 80
+    timeout: 180
+  with_items: "{{ myFactsg.instances }}"
+  ignore_errors: True
+
+- name: Register an instance target to a target group
+  elb_target:
+    target_group_name: devops-server-green
+    target_id: "{{ item.instance_id }}"
+    state: present
+    region: us-east-2
+  with_items: "{{ myFactsg.instances }}" 
+
+
+#- name: Add each EC2 instance to the ELB
+#  ec2_elb:
+#    state: present
+#    enable_availability_zone: no
+#    ec2_elbs: "green-lb"
+#    region: us-east-2
+#    instance_id: "{{ item.instance_id }}"
+#  with_items: "{{ myFacts.instances }}"
+
+- name: change route53
+  route53:
+    state: present
+    zone: devops.com
+    record: www.devops.com
+    failover: SECONDARY
+    identifier: blue-server
+    type: CNAME
+    ttl: 30
+    private_zone: yes
+    overwrite: yes
+    value: "green-lb-1823572237.us-east-2.elb.amazonaws.com"
+    wait: yes
+    health_check: "510e8d1f-4a2d-486d-8149-b284511972d9"
