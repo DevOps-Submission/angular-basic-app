@@ -83,19 +83,24 @@ pipeline {
                 }
                 stage('Create EC2 Instance') {
                     steps {
-                        sh 'cd Ansible/ansible-blue'
-                        ansiblePlaybook playbook: 'main-provision.yaml'
+                        dir('Ansible/ansible-blue') {
+                          ansiblePlaybook playbook: 'main-provision.yaml'
+                        }
                     }
                 } 
                 stage('Deploy to EC2 Instance') {
                     steps {
-                        ansiblePlaybook playbook: 'main-deploy.yaml'
+                        dir('Ansible/ansible-blue') {
+                          ansiblePlaybook playbook: 'main-deploy.yaml'
+                        }
                         input message: "Forward to users?"
                     }
                 }
                 stage('Forward to users') {
                     steps {
-                        ansiblePlaybook playbook: 'main-expose.yaml'
+                        dir('Ansible/ansible-blue') {
+                          ansiblePlaybook playbook: 'main-expose.yaml'
+                        }
                     }
                 } 
             }
