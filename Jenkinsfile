@@ -72,30 +72,35 @@ pipeline {
                             sh """
                             mkdir -p ~/.aws
                             echo "[default]" >~/.aws/credentials
-                            echo "[default]" >~/.boto
-                            echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> ~/.boto
-                            echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.boto
                             echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
                             echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
                             """
                         }
+                      sh 'pip3 install boto'
+                      sh 'pip3 install boto3'
+                      sh 'chmod 400 Ansible/aws/aws-keys/pipeline.pem'
                     }
                 }
                 stage('Create EC2 Instance') {
                     steps {
-                        sh 'cd Ansible/ansible-green'
+                      dir('Ansible/ansible-green') {
                         ansiblePlaybook playbook: 'main-provision.yaml'
+                      }
                     }
                 } 
                 stage('Deploy to EC2 Instance') {
                     steps {
-                        ansiblePlaybook playbook: 'main-deploy.yaml'
-                        input message: "Forward to users?"
+                        dir('Ansible/ansible-green') {
+                          ansiblePlaybook playbook: 'main-deploy.yaml'
+                        }
+                          input message: "Forward to users?"
                     }
                 }
-                stage('Create EC2 Instance') {
+                stage('Forward to users') {
                     steps {
+                      dir('Ansible/ansible-green') {
                         ansiblePlaybook playbook: 'main-expose.yaml'
+                      }
                     }
                 } 
             }
