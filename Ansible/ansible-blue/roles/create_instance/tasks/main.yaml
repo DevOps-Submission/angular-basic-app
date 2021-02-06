@@ -9,7 +9,7 @@
     group_id: 
       - sg-076007dfdb9d1006a
       - sg-f4cf3188
-#    instance_profile_name: EC2-Ansible
+    instance_profile_name: EC2-Ansible
     wait: yes
     instance_tags:
       Name: devops-server-blue
