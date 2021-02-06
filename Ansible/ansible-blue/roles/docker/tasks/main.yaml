@@ -25,12 +25,12 @@
 
 - name: Pull Docker image
   docker_image:
-    name: yaraamrallah/angular-basic-app:v
+    name: yaraamrallah/angular-basic-app:b
     source: pull
 
 - name: Create a docker container
   docker_container:
     name: "angular-app"
-    image: yaraamrallah/angular-basic-app:v
+    image: yaraamrallah/angular-basic-app:b
     ports:
       - "80:80"
