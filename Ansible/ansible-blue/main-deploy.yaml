@@ -1,0 +1,12 @@
+---
+- name: Deploy
+  hosts: blue
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    application: blue
+  become: yes
+  tasks:
+    - name: Install and deploy docker
+      include_role: 
+        name: docker
