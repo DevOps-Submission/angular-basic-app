@@ -78,6 +78,7 @@ pipeline {
                         }
                       sh 'pip3 install boto'
                       sh 'pip3 install boto3'
+                      sh 'chmod 400 Ansible/aws/aws-keys/pipeline.pem'
                     }
                 }
                 stage('Create EC2 Instance') {
