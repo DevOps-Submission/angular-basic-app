@@ -49,30 +49,53 @@ pipeline {
                 }
                 stage('Build Docker Image') {
                     steps {
-                        sh 'docker build -t yaraamrallah/angular-basic-app:v .'
+                        sh 'docker build -t yaraamrallah/angular-basic-app:b .'
                     }
                 }
                 stage('Push Image') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                             sh 'docker login --username $USERNAME --password $PASSWORD'
-                            sh 'docker push yaraamrallah/angular-basic-app:v'
+                            sh 'docker push yaraamrallah/angular-basic-app:b'
                         }
                     }
                 }
                 stage('Image Security Scan') {
                     steps {
-                        writeFile file: 'anchore_images', text: 'docker.io/yaraamrallah/angular-basic-app:v'
+                        writeFile file: 'anchore_images', text: 'docker.io/yaraamrallah/angular-basic-app:b'
                         anchore name: 'anchore_images'
                     }
                 }
-                stage('Run Image') {
+                stage('AWS Credentials') {
                     steps {
-                        sh 'docker run -d -p 80:80 --name angular-app yaraamrallah/angular-basic-app:v'
-                        input message: "Finished Testing?"
-                        sh 'docker stop angular-app'
-                        sh 'docker rm angular-app'
-                        sh 'docker rmi yaraamrallah/angular-basic-app:v'
+                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'JenkinsAWS', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                            sh """
+                            mkdir -p ~/.aws
+                            echo "[default]" >~/.aws/credentials
+                            echo "[default]" >~/.boto
+                            echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> ~/.boto
+                            echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.boto
+                            echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
+                            echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
+                            """
+                        }
+                    }
+                }
+                stage('Create EC2 Instance') {
+                    steps {
+                        sh 'cd Ansible/ansible-blue'
+                        ansiblePlaybook playbook: 'main-provision.yaml'
+                    }
+                } 
+                stage('Deploy to EC2 Instance') {
+                    steps {
+                        ansiblePlaybook playbook: 'main-deploy.yaml'
+                        input message: "Forward to users?"
+                    }
+                }
+                stage('Create EC2 Instance') {
+                    steps {
+                        ansiblePlaybook playbook: 'main-expose.yaml'
                     }
                 } 
             }
