@@ -20,3 +20,20 @@
   register: ec2_instances
 
 - debug: var=ec2_instances
+
+- name: Gather Information about green instances
+  ec2_instance_info:
+    region: us-east-2
+    filters:
+      "tag:application": green
+  register: myFacts
+
+- debug: var=myFacts
+
+- name: Wait for servers to come online
+  wait_for:
+    host: "{{ item.public_ip_address }}"
+    port: 22
+    timeout: 300
+  with_items: "{{ myFacts.instances }}"
+  ignore_errors: True
